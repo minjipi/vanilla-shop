@@ -1,0 +1,1 @@
+package com.minji.vanillashop.domain.product.repository;
