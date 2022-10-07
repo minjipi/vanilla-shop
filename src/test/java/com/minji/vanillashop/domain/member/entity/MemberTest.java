@@ -53,7 +53,7 @@ class MemberTest {
                 );
 
                 //then
-                assertThat(exception.getMessage()).isEqualTo("이름은 필수값 입니다.");
+                assertThat(exception.getMessage()).isEqualTo(" 필수값 입니다.");
             }
         }
     }

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
+
+    <th:block th:fragment="content">
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="description" content="">
+            <meta name="author" content="">
+
+            <h1 class="mt-4">회원 목록</h1>
+        </head>
+        <body>
+        <div class="container">
+
+            <div>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>번호</th>
+                        <br/>
+                        <th>이름</th>
+                        <br/>
+                        <th>이메일</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="member : ${members}">
+                        <td th:text="${member.id}"></td>
+                        <td th:text="${member.name}"></td>
+                        <td th:text="${member.email}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        </body>
+    </th:block>
+
+</th:block>
+</html>
