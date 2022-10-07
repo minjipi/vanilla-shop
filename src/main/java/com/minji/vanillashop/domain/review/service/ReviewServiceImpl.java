@@ -23,36 +23,36 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public List<ReviewDTO> getListOfProduct(Long pno){
 
-        Product movie = Product.builder().pno(pno).build();
+        Product product = Product.builder().pno(pno).build();
 
-        List<Review> result = reviewRepository.findByProduct(movie);
+        List<Review> result = reviewRepository.findByProduct(product);
 
-        return result.stream().map(movieReview -> entityToDto(movieReview)).collect(Collectors.toList());
+        return result.stream().map(productReview -> entityToDto(productReview)).collect(Collectors.toList());
     }
 
     @Override
-    public Long register(ReviewDTO movieReviewDTO) {
+    public Long register(ReviewDTO productReviewDTO) {
 
-        Review movieReview = dtoToEntity(movieReviewDTO);
+        Review productReview = dtoToEntity(productReviewDTO);
 
-        reviewRepository.save(movieReview);
+        reviewRepository.save(productReview);
 
-        return movieReview.getReviewnum();
+        return productReview.getReviewnum();
     }
 
     @Override
-    public void modify(ReviewDTO movieReviewDTO) {
+    public void modify(ReviewDTO productReviewDTO) {
 
         Optional<Review> result =
-                reviewRepository.findById(movieReviewDTO.getReviewnum());
+                reviewRepository.findById(productReviewDTO.getReviewnum());
 
         if(result.isPresent()){
 
-            Review movieReview = result.get();
-            movieReview.changeGrade(movieReviewDTO.getGrade());
-            movieReview.changeText(movieReviewDTO.getText());
+            Review productReview = result.get();
+            productReview.changeGrade(productReviewDTO.getGrade());
+            productReview.changeText(productReviewDTO.getText());
 
-            reviewRepository.save(movieReview);
+            reviewRepository.save(productReview);
         }
 
     }
