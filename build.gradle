@@ -24,8 +24,15 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.14'
 
+    testImplementation("org.junit.platform:junit-platform-launcher:1.5.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
 }
 
 tasks.named('test') {
+    useJUnitPlatform()
+}
+
+
+test {
     useJUnitPlatform()
 }
