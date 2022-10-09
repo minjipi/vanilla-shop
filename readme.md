@@ -8,16 +8,17 @@ JPA Refactoring Project
 ## 프로젝트 구조 <br />
 
 <img width="1353" alt="전체과정" src="https://user-images.githubusercontent.com/68539040/194755672-0559e78e-e674-44bc-88d5-453470fc0b32.png">
- <br /> <br />
+ 테스트 페이지 화면 입니다.  도메인 분리 작업 100% 완료 후 기존 프론트엔드 화면으로 전환할 예정 입니다.
+<br /> <br />
 
 ## 프로젝트 주요 관심사
 + 변경과 확장에 유연한 기술을 지향합니다. 
   > + [JPA 사용 이유](https://blog.naver.com/ghdalswl77/222809316027) <br /> 
-  > + [Entity에서의 setter 사용 지양](https://blog.naver.com/ghdalswl77/222533904073) <br />
+  > + [Entity에서의 setter 사용 지양](https://blog.naver.com/ghdalswl77/222895556212) <br />
+  > + [테스트코드 작성 습관화](https://blog.naver.com/ghdalswl77/222896219248) <br />
   > + 연관관계는 모두 지연 로딩으로 설정 <br />
-  > + 다대다 테이블 지양<br />
+  > + @ManyToMany 관계 지양 <br />
   > + querydsl 사용 <br />
-  > + 테스트코드 작성 <br />
       <br />
 
 ## 개발 환경
