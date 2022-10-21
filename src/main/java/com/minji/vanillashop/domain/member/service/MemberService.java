@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,5 +34,19 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
+    public Optional<Member> findOne(Long memberId) {
+        return memberRepository.findById(memberId);
+    }
 
+    /**
+     * 회원 수정
+     */
+    @Transactional
+    public void update(Long id, String name) {
+        Member member = memberRepository.findById(id).orElseThrow(
+                ()-> new NoSuchElementException());
+
+        member.updateMember(name);
+
+    }
 }
