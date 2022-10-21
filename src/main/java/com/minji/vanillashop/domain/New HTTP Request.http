@@ -1,0 +1,16 @@
+POST http://localhost:8080/api/members
+Content-Type: application/json
+
+{
+  "name": "minji",
+  "email": "minji@minji.com",
+  "password": "minji"
+}
+
+### Send POST request with json body
+PUT http://localhost:8080/api/members/1
+Content-Type: application/json
+
+{
+  "name": "minji1"
+}

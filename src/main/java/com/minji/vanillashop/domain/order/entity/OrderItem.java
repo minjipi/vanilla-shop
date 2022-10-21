@@ -24,7 +24,7 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-    private com.minji.vanillashop.domain.order.entity.Order order;
+    private Order order;
 
     private int orderPrice;
 
@@ -37,7 +37,6 @@ public class OrderItem {
         orderItem.setProduct(product);
         orderItem.setOrderPrice(orderPrice);
         orderItem.setCount(count);
-
         product.removeStock(count);
         return orderItem;
     }
@@ -50,4 +49,5 @@ public class OrderItem {
     public int getTotalPrice() {
         return getOrderPrice() * getCount();
     }
+
 }

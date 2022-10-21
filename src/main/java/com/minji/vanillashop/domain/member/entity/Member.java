@@ -2,8 +2,10 @@ package com.minji.vanillashop.domain.member.entity;
 
 
 import com.minji.vanillashop.domain.order.entity.Order;
-import lombok.*;
-import org.springframework.util.Assert;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import java.util.Set;
 @ToString(exclude = "roleSet")
 public class Member extends BaseEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "member_id")
     private Long id;
 
@@ -40,22 +42,24 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "member_id")
     private List<Order> orders;
 
-    public void registerOrder(Order order){
-        if(orders == null) orders = new ArrayList<>();
+    public void registerOrder(Order order) {
+        if (orders == null) orders = new ArrayList<>();
         orders.add(order);
     }
 
     @Builder
     public Member(String name, String email, String password, MemberRole roleSet) {
-        Assert.notNull(name, "이름은 필수값 입니다.");
-        Assert.notNull(email, "이메일은 필수값 입니다.");
-        Assert.notNull(password, "비밀번호는 필수값 입니다.");
+//        Assert.notNull(name, "이름은 필수값 입니다.");
+//        Assert.notNull(email, "이메일은 필수값 입니다.");
+//        Assert.notNull(password, "비밀번호는 필수값 입니다.");
 
         this.name = name;
         this.email = email;
         this.password = password;
-
     }
 
+    public void updateMember(String name) {
+        this.name = name;
+    }
 }
 

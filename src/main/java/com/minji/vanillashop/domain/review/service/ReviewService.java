@@ -40,12 +40,12 @@ public interface ReviewService {
                 .reviewnum(productReview.getReviewnum())
                 .pno(productReview.getProduct().getPno())
 //                .mid(productReview.getMember().getMid())
-                .nickname(productReview.getMember().getName())
+                .name(productReview.getMember().getName())
                 .email(productReview.getMember().getEmail())
                 .grade(productReview.getGrade())
                 .text(productReview.getText())
-                .regDate(productReview.getRegDate())
-                .modDate(productReview.getModDate())
+//                .regDate(productReview.getRegDate())
+//                .modDate(productReview.getModDate())
                 .build();
 
         return productReviewDTO;

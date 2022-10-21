@@ -4,10 +4,7 @@ package com.minji.vanillashop.domain.order.entity;
 import com.minji.vanillashop.domain.delivery.entity.Delivery;
 import com.minji.vanillashop.domain.delivery.entity.DeliveryStatus;
 import com.minji.vanillashop.domain.member.entity.Member;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -28,10 +25,6 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
-
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
@@ -44,12 +37,6 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-
-    public Order(Member member) {
-        this.member = member;
-        member.getOrders().add(this);
-    }
-
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
         orderItem.setOrder(this);
@@ -60,7 +47,16 @@ public class Order {
         delivery.setOrder(this);
     }
 
-    //    생성 메서드
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    public void registerMember(Member member) {
+        this.member = member;
+        this.member.registerOrder(this);
+    }
+
+    @Builder
     public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
         Order order = new Order();
         order.setMember(member);

@@ -65,11 +65,11 @@
 
 
         <button type="button" class="btn btn-primary">
-            Review Count <span class="badge badge-light">[[${dto.reviewCnt}]]</span>
+            후기 <span class="badge badge-light">[[${dto.reviewCnt}]]</span>
         </button>
 
         <button type="button" class="btn btn-info addReviewBtn">
-            Review Register
+            후기 등록
         </button>
 
         <button type="button" class="btn btn-primary">
@@ -219,7 +219,7 @@
 
                             str += '    <div class="card-body" data-reviewnum=' + review.reviewnum + ' data-mid=' + review.mid + '>';
                             str += '    <h5 class="card-title">' + review.text + ' <span>' + review.grade + '</span></h5>';
-                            str += '    <h6 class="card-subtitle mb-2 text-muted">' + review.nickname + '</h6>';
+                            str += '    <h6 class="card-subtitle mb-2 text-muted">' + review.name + '</h6>';
                             str += '    <p class="card-text">' + formatTime(review.regDate) + '</p>';
                             str += '    </div>';
                         });

@@ -1,11 +1,10 @@
 package com.minji.vanillashop.domain.review.dto;
 
+import com.minji.vanillashop.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 
 @Data
@@ -22,8 +21,10 @@ public class ReviewDTO {
 
     //Membmer id
     private Long mid;
-    //Member nickname
-    private String nickname;
+
+    Member nickname;
+
+    private String name;
     //Member email
     private String email;
 
@@ -31,7 +32,7 @@ public class ReviewDTO {
 
     private String text;
 
-    private LocalDateTime regDate, modDate;
+//    private LocalDateTime regDate, modDate;
 
 
 }
