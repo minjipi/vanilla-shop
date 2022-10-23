@@ -9,6 +9,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
@@ -19,7 +20,6 @@ import static javax.persistence.FetchType.LAZY;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
-
     @Id
     @GeneratedValue
     @Column(name = "order_id")
@@ -36,6 +36,7 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
 
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
@@ -57,15 +58,23 @@ public class Order {
     }
 
     @Builder
-    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
-        Order order = new Order();
-        order.setMember(member);
-        order.setDelivery(delivery);
+    public Order(Member member, Delivery delivery, List<OrderItem> orderItems) {
+        this.member = member;
+        this.delivery = delivery;
         for (OrderItem orderItem : orderItems) {
-            order.addOrderItem(orderItem);
+            this.addOrderItem(orderItem);
         }
-        order.setStatus(OrderStatus.ORDER);
-        order.setOrderDate(LocalDateTime.now());
+        this.status = OrderStatus.ORDER;
+        this.orderDate = LocalDateTime.now();
+    }
+
+    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
+        Order order = Order.builder()
+                .member(member)
+                .delivery(delivery)
+                .orderItems(Arrays.asList(orderItems))
+                .build();
+
         return order;
     }
 
@@ -81,12 +90,13 @@ public class Order {
         }
     }
 
-    //    조회 로직
-//    전체 주문 가격 조회
+    /**
+     * 조회 로직
+     * 전체 주문 가격 조회
+     */
+
     public int getTotalPrice() {
         int totalPrice = 0;
-
-//        for (OrderItem orderItem : orderItems) totalPrice += orderItem.getTotalPrice(); 람다식..
 
         for (OrderItem orderItem : orderItems) {
             totalPrice += orderItem.getTotalPrice();

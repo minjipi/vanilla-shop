@@ -15,11 +15,9 @@ import javax.persistence.EntityManager;
 /**
  * 종 주문 2개
  * * userA
- * * pajamas1
- * * pajamas2
+ * * pajamas1,2
  * * userB
- * * SPRING1 Product
- * * SPRING2 Product
+ * * pajamas3,4
  */
 
 @Component
@@ -42,7 +40,6 @@ public class InitDb {
         private final EntityManager em;
 
         public void dbInit1() {
-            System.out.println("Init1" + this.getClass());
             Member member = createMember("userA", "minji1");
             em.persist(member);
 
@@ -52,14 +49,23 @@ public class InitDb {
             Product pajamas2 = createProduct("pajamas2", 20000, 100);
             em.persist(pajamas2);
 
-            System.out.println(pajamas1.getStockQuantity());
             System.out.println("================");
 
-            OrderItem orderItem1 = OrderItem.createOrderItem(pajamas1, 10000, 1);
-            OrderItem orderItem2 = OrderItem.createOrderItem(pajamas2, 20000, 2);
+            OrderItem orderItem1 = OrderItem.builder()
+                    .product(pajamas1)
+                    .orderPrice(2000)
+                    .count(2)
+                    .build();
+
+            OrderItem orderItem2 = OrderItem.builder()
+                    .product(pajamas2)
+                    .orderPrice(2000)
+                    .count(2)
+                    .build();
 
             Delivery delivery = createDelivery(member);
             Order order = Order.createOrder(member, delivery, orderItem1, orderItem2);
+
             em.persist(order);
         }
 
@@ -67,17 +73,30 @@ public class InitDb {
             Member member = createMember("userB", "minji2");
             em.persist(member);
 
-            Product pajamas1 = createProduct("pajamas1", 20000, 200);
-            em.persist(pajamas1);
+            Product pajamas3 = createProduct("pajamas3", 20000, 200);
+            em.persist(pajamas3);
 
-            Product pajamas2 = createProduct("pajamas2", 40000, 300);
-            em.persist(pajamas2);
+            Product pajamas4 = createProduct("pajamas4", 40000, 300);
+            em.persist(pajamas4);
 
-            OrderItem orderItem1 = OrderItem.createOrderItem(pajamas1, 20000, 3);
-            OrderItem orderItem2 = OrderItem.createOrderItem(pajamas2, 40000, 4);
+
+            OrderItem orderItem3 = OrderItem.builder()
+                    .product(pajamas3)
+                    .orderPrice(2000)
+                    .count(3)
+                    .build();
+
+            OrderItem orderItem4 = OrderItem.builder()
+                    .product(pajamas4)
+                    .orderPrice(2000)
+                    .count(4)
+                    .build();
+
 
             Delivery delivery = createDelivery(member);
-            Order order = Order.createOrder(member, delivery, orderItem1, orderItem2);
+
+            Order order = Order.createOrder(member, delivery, orderItem3, orderItem4);
+
             em.persist(order);
         }
 
