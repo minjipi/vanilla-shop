@@ -4,17 +4,13 @@ import com.minji.vanillashop.domain.member.entity.Member;
 import com.minji.vanillashop.domain.member.service.MemberService;
 import com.minji.vanillashop.domain.order.entity.Order;
 import com.minji.vanillashop.domain.order.entity.OrderSearch;
-import com.minji.vanillashop.domain.order.repository.OrderRepository;
 import com.minji.vanillashop.domain.order.service.OrderService;
 import com.minji.vanillashop.domain.product.entity.Product;
 import com.minji.vanillashop.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,8 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
-    private final OrderRepository orderRepository;
-
     private final MemberService memberService;
     private final ProductService productService;
 
@@ -42,7 +36,7 @@ public class OrderController {
                         @RequestParam("productId") Long productId,
                         @RequestParam("count") int count) {
 
-        orderService.order(memberId, productId, count);
+        orderService.createOrder(memberId, productId, count);
         return "redirect:/orders";
     }
 
@@ -52,6 +46,12 @@ public class OrderController {
         model.addAttribute("orders", orders);
 
         return "order/orderList";
+    }
+
+    @PostMapping("/orders/{orderId}/cancel")
+    public String cancelOrder(@PathVariable("orderId") Long orderId) {
+        orderService.cancelOrder(orderId);
+        return "redirect:/orders";
     }
 
 }

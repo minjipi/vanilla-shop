@@ -9,12 +9,13 @@ import com.minji.vanillashop.domain.order.entity.OrderSearch;
 import com.minji.vanillashop.domain.order.repository.OrderRepository;
 import com.minji.vanillashop.domain.product.entity.Product;
 import com.minji.vanillashop.domain.product.repository.ProductRepository;
+import com.minji.vanillashop.global.exceptions.MemberNotFoundException;
+import com.minji.vanillashop.global.exceptions.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -27,37 +28,48 @@ public class OrderService {
 
     // 주문
     @Transactional
-    public Long order(Long memberId, Long productId, int count) {
-        //entity 조회
-        Optional<Member> member = memberRepository.findById(memberId);
-        Optional<Product> product = productRepository.findById(productId);
+    public String createOrder(Long memberId, Long productId, int count) {
 
-        //배송 정보
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new MemberNotFoundException("존재하지 않는 사용자 입니다."));
+
+
+        Product product = productRepository.findById(productId).orElseThrow(
+                () -> new ProductNotFoundException("존재하지 않는 상품 입니다."));
+
         Delivery delivery = new Delivery();
 
         //주문상품 생성
-        OrderItem orderItem = OrderItem.createOrderItem(product.get(), product.get().getPrice(), count);
+        OrderItem orderItem = OrderItem.builder()
+                .product(product)
+                .orderPrice(product.getPrice())
+                .count(count)
+                .build();
 
         //주문 생성
-        Order order = Order.createOrder(member.get(), delivery, orderItem);
+        Order order = Order.builder()
+                .delivery(delivery)
+                .orderItems(Order.createOrderItem(orderItem))
+                .build();
+
+//        Order order = Order.createOrder(member.get(), delivery, orderItem);
 
         //주문 저장
         orderRepository.save(order);
+        order.registerMember(member);
 
-        return order.getId();
+        return order.getId().toString();
     }
 
-
-
-//    취소
+    //    취소
     @Transactional
-    public void cancelOrder(Long orderId){
+    public void cancelOrder(Long orderId) {
         Order order = orderRepository.findById(orderId);
         order.cancel();
     }
 
 
-    public List<Order> findOrders(OrderSearch orderSearch){
+    public List<Order> findOrders(OrderSearch orderSearch) {
         return orderRepository.findAllByString(orderSearch);
     }
 }

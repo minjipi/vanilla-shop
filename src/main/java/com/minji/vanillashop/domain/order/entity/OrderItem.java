@@ -27,18 +27,31 @@ public class OrderItem {
 
     private int count;
 
-
+    //==생성 메서드==//
     @Builder
     public OrderItem(Product product, int orderPrice, int count) {
         this.product = product;
         this.orderPrice = orderPrice;
         this.count = count;
+        product.removeStock(count);
     }
 
+//    public static OrderItem createOrderItem(Product product, int orderPrice, int count) {
+//        OrderItem orderItem = new OrderItem();
+//        orderItem.setProduct(product);
+//        orderItem.setOrderPrice(orderPrice);
+//        orderItem.setCount(count);
+
+//        product.removeStock(count);
+//        return orderItem;
+//    }
+
+    //==비즈니스 로직==//
     public void cancel() {
         getProduct().addStock(count);
     }
 
+    //==조회 로직==//
     public int getTotalPrice() {
         return getOrderPrice() * getCount();
     }

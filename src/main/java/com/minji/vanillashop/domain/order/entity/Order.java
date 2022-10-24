@@ -1,6 +1,5 @@
 package com.minji.vanillashop.domain.order.entity;
 
-
 import com.minji.vanillashop.domain.delivery.entity.Delivery;
 import com.minji.vanillashop.domain.delivery.entity.DeliveryStatus;
 import com.minji.vanillashop.domain.member.entity.Member;
@@ -37,7 +36,6 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
         orderItem.setOrder(this);
@@ -57,6 +55,19 @@ public class Order {
         this.member.registerOrder(this);
     }
 
+    //==생성 메서드==//
+//    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
+//        Order order = new Order();
+//        order.setMember(member);
+//        order.setDelivery(delivery);
+//        for (OrderItem orderItem : orderItems) {
+//            order.addOrderItem(orderItem);
+//        }
+//        order.setStatus(OrderStatus.ORDER);
+//        order.setOrderDate(LocalDateTime.now());
+//        return order;
+//    }
+
     @Builder
     public Order(Member member, Delivery delivery, List<OrderItem> orderItems) {
         this.member = member;
@@ -68,14 +79,8 @@ public class Order {
         this.orderDate = LocalDateTime.now();
     }
 
-    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
-        Order order = Order.builder()
-                .member(member)
-                .delivery(delivery)
-                .orderItems(Arrays.asList(orderItems))
-                .build();
-
-        return order;
+    public static List<OrderItem> createOrderItem(OrderItem... orderItems) {
+        return Arrays.asList(orderItems);
     }
 
     //    비즈니스 로직

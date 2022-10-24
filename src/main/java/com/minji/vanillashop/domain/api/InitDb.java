@@ -64,7 +64,13 @@ public class InitDb {
                     .build();
 
             Delivery delivery = createDelivery(member);
-            Order order = Order.createOrder(member, delivery, orderItem1, orderItem2);
+
+//            Order order = Order.createOrder(member, delivery, orderItem1, orderItem2);
+            Order order = Order.builder()
+                    .member(member)
+                    .delivery(delivery)
+                    .orderItems(Order.createOrderItem(orderItem1, orderItem2))
+                    .build();
 
             em.persist(order);
         }
@@ -95,7 +101,13 @@ public class InitDb {
 
             Delivery delivery = createDelivery(member);
 
-            Order order = Order.createOrder(member, delivery, orderItem3, orderItem4);
+
+//            Order order = Order.createOrder(member, delivery, orderItem3, orderItem4);
+            Order order = Order.builder()
+                    .member(member)
+                    .delivery(delivery)
+                    .orderItems(Order.createOrderItem(orderItem3, orderItem4))
+                    .build();
 
             em.persist(order);
         }
