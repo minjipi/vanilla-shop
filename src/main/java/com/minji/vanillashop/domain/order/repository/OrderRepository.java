@@ -2,6 +2,9 @@ package com.minji.vanillashop.domain.order.repository;
 
 import com.minji.vanillashop.domain.order.entity.Order;
 import com.minji.vanillashop.domain.order.entity.OrderSearch;
+import com.minji.vanillashop.domain.order.entity.OrderStatus;
+import com.minji.vanillashop.domain.order.entity.QOrder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -64,6 +67,13 @@ public class OrderRepository {
         }
 
         return query.getResultList();
+    }
+
+    private BooleanExpression statusEq(OrderStatus statusCond){
+        if (statusCond == null){
+            return null;
+        }
+        return QOrder.order.status.eq(statusCond);
     }
 
     public List<Order> findAllWithMemberDelivery(int offset, int limit) {
