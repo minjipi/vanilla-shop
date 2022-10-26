@@ -28,8 +28,7 @@ public class OrderService {
 
     // 주문
     @Transactional
-    public String createOrder(Long memberId, Long productId, int count) {
-
+    public Long createOrder(Long memberId, Long productId, Integer count) {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new MemberNotFoundException("존재하지 않는 사용자 입니다."));
 
@@ -58,7 +57,7 @@ public class OrderService {
         orderRepository.save(order);
         order.registerMember(member);
 
-        return order.getId().toString();
+        return order.getId();
     }
 
     //    취소
@@ -72,4 +71,7 @@ public class OrderService {
     public List<Order> findOrders(OrderSearch orderSearch) {
         return orderRepository.findAllByString(orderSearch);
     }
+
+
+
 }

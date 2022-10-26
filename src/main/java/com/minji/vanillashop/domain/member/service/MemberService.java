@@ -34,7 +34,7 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
-    public Optional<Member> findOne(Long memberId) {
+    public Optional<Member> findOne(String memberId) {
         return memberRepository.findById(memberId);
     }
 
@@ -42,7 +42,7 @@ public class MemberService {
      * 회원 수정
      */
     @Transactional
-    public void update(Long id, String name) {
+    public void update(String id, String name) {
         Member member = memberRepository.findById(id).orElseThrow(
                 ()-> new NoSuchElementException());
 

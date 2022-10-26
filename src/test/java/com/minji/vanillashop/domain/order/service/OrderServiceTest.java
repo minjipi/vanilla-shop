@@ -7,7 +7,6 @@ import com.minji.vanillashop.domain.order.entity.OrderStatus;
 import com.minji.vanillashop.domain.order.repository.OrderRepository;
 import com.minji.vanillashop.domain.product.entity.Product;
 import com.minji.vanillashop.domain.product.repository.ProductRepository;
-
 import com.minji.vanillashop.global.exceptions.NotEnoughStockException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -16,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest
@@ -43,7 +42,7 @@ class OrderServiceTest {
 
         int orderCount = 2;
 
-        Long orderId = orderService.order(member.getId(), product.getPno(), orderCount);
+        Long orderId = orderService.createOrder(member.getId(), product.getPno(), orderCount);
 
         Order getOrder = orderRepository.findById(orderId);
 
@@ -81,7 +80,7 @@ class OrderServiceTest {
         int orderCount = 11;
 
         assertThrows(NotEnoughStockException.class,
-                () -> orderService.order(member.getId(), product.getPno(), orderCount), "재고 수량 부족 예외가 발생해야 한다.");
+                () -> orderService.createOrder(member.getId(), product.getPno(), orderCount), "재고 수량 부족 예외가 발생해야 한다.");
     }
 
     @Test
@@ -95,7 +94,7 @@ class OrderServiceTest {
 
         int orderCount = 2;
 
-        Long orderId = orderService.order(member.getId(), product.getPno(), orderCount);
+        Long orderId = orderService.createOrder(member.getId(), product.getPno(), orderCount);
 
         //when
         orderService.cancelOrder(orderId);

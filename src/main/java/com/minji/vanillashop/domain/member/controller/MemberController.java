@@ -1,7 +1,7 @@
 package com.minji.vanillashop.domain.member.controller;
 
-import com.minji.vanillashop.domain.member.service.MemberService;
 import com.minji.vanillashop.domain.member.entity.Member;
+import com.minji.vanillashop.domain.member.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -62,7 +62,7 @@ public class MemberController {
      * 수정
      */
     @PutMapping("/api/members/{id}")
-    public UpdateMemberResponse updateMemberV2(@PathVariable("id") Long id, @RequestBody @Valid UpdateMemberRequest request) {
+    public UpdateMemberResponse updateMemberV2(@PathVariable("id") String id, @RequestBody @Valid UpdateMemberRequest request) {
         memberService.update(id, request.getName());
         Optional<Member> findMember = memberService.findOne(id);
         return new UpdateMemberResponse(findMember.get().getId(), findMember.get().getName());

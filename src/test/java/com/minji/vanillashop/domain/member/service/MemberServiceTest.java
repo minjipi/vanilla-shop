@@ -11,12 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -54,7 +53,7 @@ class MemberServiceTest {
 
                 //when
                 Long saveID = memberService.joinMember(member);
-                Optional optional = memberRepository.findById(saveID);
+                Optional optional = memberRepository.findById(saveID.toString());
 
                 //then
                 assertEquals(member, optional.get());
