@@ -2,6 +2,7 @@ package com.minji.vanillashop.domain.order.controller;
 
 import com.minji.vanillashop.domain.member.entity.Member;
 import com.minji.vanillashop.domain.member.service.MemberService;
+import com.minji.vanillashop.domain.order.dto.PostOrderDto;
 import com.minji.vanillashop.domain.order.entity.Order;
 import com.minji.vanillashop.domain.order.entity.OrderSearch;
 import com.minji.vanillashop.domain.order.service.OrderService;
@@ -32,11 +33,13 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    public String order(@RequestParam("memberId") Long memberId,
-                        @RequestParam("productId") Long productId,
-                        @RequestParam("count") int count) {
+    public String order(@RequestBody PostOrderDto postOrderDto) {
 
-        orderService.createOrder(memberId, productId, count);
+//    public String order(@RequestParam("memberId") Long memberId,
+//                        @RequestParam("productId") Long productId,
+//                        @RequestParam("count") int count) {
+
+        orderService.createOrder(postOrderDto.getMemberId(), postOrderDto.getProductId(), postOrderDto.getCount());
         return "redirect:/orders";
     }
 
