@@ -2,7 +2,7 @@ package com.minji.vanillashop.domain.order.controller;
 
 import com.minji.vanillashop.domain.order.dto.PostOrderDto;
 import com.minji.vanillashop.domain.order.dto.domain.MemberOrderDetail;
-import com.minji.vanillashop.domain.order.entity.Order;
+import com.minji.vanillashop.domain.order.dto.request.MemberOrderQuery;
 import com.minji.vanillashop.domain.order.repository.OrderRepository;
 import com.minji.vanillashop.domain.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 
 @RestController
@@ -29,15 +27,23 @@ public class OrderApiController {
     }
 
 
-
     @GetMapping("/orders")
-    public List<MemberOrderDetail> ordersV3_page(@RequestParam(value = "offset", defaultValue = "0") int offset,
-                                                 @RequestParam(value = "limit", defaultValue = "100") int limit) {
+    public ResponseEntity<List<MemberOrderDetail>> ordersV3_page(
+            @RequestParam(required = false) String memberEmail,
+            @RequestParam(required = false, value = "offset", defaultValue = "0") int offset,
+            @RequestParam(required = false, value = "limit", defaultValue = "0") int limit) {
 
-        List<Order> orders = orderRepository.findAllWithMemberDelivery(offset, limit);
-        List<MemberOrderDetail> result = orders.stream()
-                .map(o -> new MemberOrderDetail(o))
-                .collect(toList());
-        return result;
+        MemberOrderQuery query = MemberOrderQuery.builder()
+                .memberEmail(memberEmail)
+                .offset(offset)
+                .limit(limit)
+                .build();
+
+//        List<Order> orders = orderRepository.findAllWithMemberDelivery(offset, limit);
+//        List<MemberOrderDetail> result = orders.stream()
+//                .map(o -> new MemberOrderDetail(o))
+//                .collect(toList());
+
+        return new ResponseEntity<>(orderService.readMemberOrderDetailList(query), HttpStatus.OK);
     }
 }
