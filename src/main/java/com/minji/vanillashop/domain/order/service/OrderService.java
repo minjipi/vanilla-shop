@@ -3,9 +3,10 @@ package com.minji.vanillashop.domain.order.service;
 import com.minji.vanillashop.domain.delivery.entity.Delivery;
 import com.minji.vanillashop.domain.member.entity.Member;
 import com.minji.vanillashop.domain.member.repository.MemberRepository;
+import com.minji.vanillashop.domain.order.dto.domain.MemberOrderDetail;
+import com.minji.vanillashop.domain.order.dto.request.MemberOrderQuery;
 import com.minji.vanillashop.domain.order.entity.Order;
 import com.minji.vanillashop.domain.order.entity.OrderItem;
-import com.minji.vanillashop.domain.order.entity.OrderSearch;
 import com.minji.vanillashop.domain.order.repository.OrderRepository;
 import com.minji.vanillashop.domain.product.entity.Product;
 import com.minji.vanillashop.domain.product.repository.ProductRepository;
@@ -61,17 +62,21 @@ public class OrderService {
     }
 
     //    취소
-    @Transactional
-    public void cancelOrder(Long orderId) {
-        Order order = orderRepository.findById(orderId);
-        order.cancel();
+//    @Transactional
+//    public void cancelOrder(Long orderId) {
+//        Order order = orderRepository.findById(orderId);
+//        order.cancel();
+//    }
+
+
+//    public List<Order> findOrders(OrderSearch orderSearch) {
+//        return orderRepository.findAllByString(orderSearch);
+//    }
+
+    @Transactional(readOnly = true)
+    public List<MemberOrderDetail> readMemberOrderDetailList(MemberOrderQuery query){
+        return orderRepository.findMemberOrderDetailListBy(query);
     }
-
-
-    public List<Order> findOrders(OrderSearch orderSearch) {
-        return orderRepository.findAllByString(orderSearch);
-    }
-
 
 
 }
