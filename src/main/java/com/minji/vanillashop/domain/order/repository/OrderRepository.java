@@ -4,9 +4,8 @@ import com.minji.vanillashop.domain.order.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface OrderRepository extends JpaRepository<Order, String>, OrderQuerydslRepository {
+public interface OrderRepository extends JpaRepository<Order, Long>{
 
-//
 //    private final EntityManager em;
 //
 //    public void save(Order order) {

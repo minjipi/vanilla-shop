@@ -1,5 +1,6 @@
 package com.minji.vanillashop.domain.order.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.minji.vanillashop.domain.product.entity.Product;
 import lombok.*;
 
@@ -19,6 +20,7 @@ public class OrderItem {
     @JoinColumn(name = "item_id")
     private Product product;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;

@@ -22,7 +22,7 @@ public class Order {
     @Id
     @GeneratedValue
     @Column(name = "order_id")
-    private Long id;
+    private Long orderNo;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();

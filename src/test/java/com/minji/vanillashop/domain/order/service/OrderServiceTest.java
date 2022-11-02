@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -34,6 +36,26 @@ class OrderServiceTest {
     @Autowired
     ProductRepository productRepository;
 
+    private final Long memberId = 5L;
+    private final Long productId = 5L;
+    private final Integer count = 1;
+
+//    @Test
+//    public void 상품주문() throws Exception {
+//        //given
+//        PostOrderDto postOrderDto = PostOrderDto.builder()
+//                .memberId(memberId)
+//                .productId(productId)
+//                .count(count)
+//                .build();
+//
+//        //when
+//        when(memberRepository.existsByEmail(any())).thenReturn(false);
+//        when(memberRepository.save(any())).thenReturn(Member.builder()
+//        .name()
+//        )
+//    }
+
     @Test
     public void 상품주문() throws Exception {
         Member member = createMember();
@@ -44,11 +66,11 @@ class OrderServiceTest {
 
         Long orderId = orderService.createOrder(member.getId(), product.getPno(), orderCount);
 
-        Order getOrder = orderRepository.findById(orderId);
+        Optional<Order> getOrder = orderRepository.findById(orderId);
 
-        assertEquals(OrderStatus.ORDER, getOrder.getStatus(), "상품 주문시 상태는 ORDER");
-        assertEquals(1, getOrder.getOrderItems().size(), "주문한 상품 종류 수 확인");
-        assertEquals(10 * orderCount, getOrder.getTotalPrice(), "주문 가격은 가격 * 수량");
+        assertEquals(OrderStatus.ORDER, getOrder.get().getStatus(), "상품 주문시 상태는 ORDER");
+        assertEquals(1, getOrder.get().getOrderItems().size(), "주문한 상품 종류 수 확인");
+        assertEquals(10 * orderCount, getOrder.get().getTotalPrice(), "주문 가격은 가격 * 수량");
         assertEquals(0, product.getStockQuantity(), "주문 수량만큼 재고가 줄어야함");
     }
 
@@ -100,8 +122,8 @@ class OrderServiceTest {
         orderService.cancelOrder(orderId);
 
         //then
-        Order getOrder = orderRepository.findById(orderId);
-        assertEquals(OrderStatus.CANCEL, getOrder.getStatus(), "상품 주문 취소시 상태는 CANCEL");
+        Optional<Order> getOrder = orderRepository.findById(orderId);
+        assertEquals(OrderStatus.CANCEL, getOrder.get().getStatus(), "상품 주문 취소시 상태는 CANCEL");
         assertEquals(10, product.getStockQuantity(), "주문이 취소된 상품은 그만큼 재고가 증가해야한다.");
     }
 }

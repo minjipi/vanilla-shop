@@ -53,7 +53,7 @@ class MemberServiceTest {
 
                 //when
                 Long saveID = memberService.joinMember(member);
-                Optional optional = memberRepository.findById(saveID.toString());
+                Optional optional = memberRepository.findById(saveID);
 
                 //then
                 assertEquals(member, optional.get());

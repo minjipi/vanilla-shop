@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
 @ToString
 @AllArgsConstructor
 public class OrderDetail {
-    private String orderNo;
-    private String productName;
-    private LocalDateTime orderAt;
+    private Long orderNo;
+    private Long orderItemNo;
+    private String title;
+    private LocalDateTime orderDate;
 }
