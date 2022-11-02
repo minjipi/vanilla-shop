@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 
+import static com.minji.vanillashop.domain.member.entity.MemberRole.USER;
+
 /**
  * 종 주문 2개
  * * userA
@@ -40,16 +42,30 @@ public class InitDb {
         private final EntityManager em;
 
         public void dbInit1() {
-            Member member = createMember("userA", "minji1");
-            em.persist(member);
+            Member member1 = Member.builder()
+                    .email("minji1@minji.com")
+                    .name("minji1")
+                    .password("1234")
+                    .roleSet(USER)
+                    .build();
 
-            Product pajamas1 = createProduct("pajamas1", 10000, 100);
+            em.persist(member1);
+
+            Product pajamas1 = Product.builder()
+                    .title("pajamas1")
+                    .price(1000)
+                    .stockQuantity(100)
+                    .build();
             em.persist(pajamas1);
 
-            Product pajamas2 = createProduct("pajamas2", 20000, 100);
-            em.persist(pajamas2);
 
-            System.out.println("================");
+            Product pajamas2 = Product.builder()
+                    .title("pajamas2")
+                    .price(2000)
+                    .stockQuantity(100)
+                    .build();
+
+            em.persist(pajamas2);
 
             OrderItem orderItem1 = OrderItem.builder()
                     .product(pajamas1)
@@ -63,12 +79,11 @@ public class InitDb {
                     .count(2)
                     .build();
 
-            Delivery delivery = createDelivery(member);
+            Delivery delivery1 = new Delivery();
 
-//            Order order = Order.createOrder(member, delivery, orderItem1, orderItem2);
             Order order = Order.builder()
-                    .member(member)
-                    .delivery(delivery)
+                    .member(member1)
+                    .delivery(delivery1)
                     .orderItems(Order.createOrderItem(orderItem1, orderItem2))
                     .build();
 
@@ -76,15 +91,30 @@ public class InitDb {
         }
 
         public void dbInit2() {
-            Member member = createMember("userB", "minji2");
-            em.persist(member);
+            Member member2 = Member.builder()
+                    .email("minji2@minji.com")
+                    .name("minji2")
+                    .password("1234")
+                    .roleSet(USER)
+                    .build();
 
-            Product pajamas3 = createProduct("pajamas3", 20000, 200);
+            em.persist(member2);
+
+            Product pajamas3 = Product.builder()
+                    .title("pajamas3")
+                    .price(2000)
+                    .stockQuantity(100)
+                    .build();
+
             em.persist(pajamas3);
 
-            Product pajamas4 = createProduct("pajamas4", 40000, 300);
-            em.persist(pajamas4);
+            Product pajamas4 = Product.builder()
+                    .title("pajamas4")
+                    .price(4000)
+                    .stockQuantity(100)
+                    .build();
 
+            em.persist(pajamas4);
 
             OrderItem orderItem3 = OrderItem.builder()
                     .product(pajamas3)
@@ -99,40 +129,18 @@ public class InitDb {
                     .build();
 
 
-            Delivery delivery = createDelivery(member);
+            Delivery delivery2 = new Delivery();
 
 
-//            Order order = Order.createOrder(member, delivery, orderItem3, orderItem4);
             Order order = Order.builder()
-                    .member(member)
-                    .delivery(delivery)
+                    .member(member2)
+                    .delivery(delivery2)
                     .orderItems(Order.createOrderItem(orderItem3, orderItem4))
                     .build();
 
             em.persist(order);
         }
 
-        private Member createMember(String name, String email) {
-            Member member = Member.builder()
-                    .name(name)
-                    .email(email)
-                    .build();
-            return member;
-        }
-
-        private Product createProduct(String name, int price, int stockQuantity) {
-            Product pajamas = Product.builder()
-                    .title(name)
-                    .price(price)
-                    .stockQuantity(stockQuantity).build();
-
-            return pajamas;
-        }
-
-        private Delivery createDelivery(Member member) {
-            Delivery delivery = new Delivery();
-            return delivery;
-        }
     }
 }
 
