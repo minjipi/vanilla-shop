@@ -1,6 +1,5 @@
 package com.minji.vanillashop.domain.order.controller;
 
-import com.minji.vanillashop.domain.member.entity.Member;
 import com.minji.vanillashop.domain.member.service.MemberService;
 import com.minji.vanillashop.domain.order.dto.PostOrderDto;
 import com.minji.vanillashop.domain.order.service.OrderService;
@@ -24,10 +23,10 @@ public class OrderController {
 
     @GetMapping("/order")
     public String createForm(Model model) {
-        List<Member> members = memberService.findMembers();
+//        List<Member> members = memberService.findMembers();
         List<Product> products = productService.findProducts();
 
-        model.addAttribute("members", members);
+//        model.addAttribute("members", members);
         model.addAttribute("product", products);
         return "order/orderForm";
     }

@@ -1,10 +1,11 @@
 package com.minji.vanillashop.domain.member.controller;
 
+import com.minji.vanillashop.domain.member.dto.domain.MemberDetailInfo;
+import com.minji.vanillashop.domain.member.dto.request.MemberListQuery;
 import com.minji.vanillashop.domain.member.dto.request.PostMemberDto;
 import com.minji.vanillashop.domain.member.dto.request.UpdateMemberDto;
 import com.minji.vanillashop.domain.member.entity.Member;
 import com.minji.vanillashop.domain.member.service.MemberService;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,22 +46,9 @@ public class MemberController {
         return "redirect:/";
     }
 
-//    맴버생성
-    @PostMapping("/member/join")
-    public CreateMemberResponse saveMemberV2(@RequestBody @Valid CreateMemberRequest request) {
-
-        Member member = Member.builder()
-                .name(request.getName())
-                .email(request.getEmail())
-                .password(request.getPassword())
-                .build();
-
-        Long id = memberService.joinMember(member);
-        return new CreateMemberResponse(id);
-    }
-
+    //    맴버생성
     @PostMapping("/api/member/join")
-    public ResponseEntity<Long> joinMember(@Valid @RequestBody PostMemberDto postMemberDto){
+    public ResponseEntity<Long> joinMember(@Valid @RequestBody PostMemberDto postMemberDto) {
         return new ResponseEntity<>(memberService.apijoinMember(postMemberDto).getId(), HttpStatus.OK);
     }
 
@@ -68,17 +56,10 @@ public class MemberController {
     /**
      * 수정
      */
-//    @PutMapping("/api/members/{id}")
-//    public UpdateMemberResponse updateMember(@PathVariable("id") String id, @RequestBody @Valid UpdateMemberDto updateMemberDto) {
-//        memberService.update(id, updateMemberDto.getName());
-//        Optional<Member> findMember = memberService.findOne(id);
-//        return new UpdateMemberResponse(findMember.get().getId(), findMember.get().getName());
-//    }
-
     @PutMapping("/api/members/{id}")
     public ResponseEntity<Long> updateMember(@PathVariable("id") Long id, @RequestBody @Valid UpdateMemberDto updateMemberDto) {
 
-        return new ResponseEntity<>(memberService.update(id, updateMemberDto).getId(),HttpStatus.CREATED);
+        return new ResponseEntity<>(memberService.update(id, updateMemberDto).getId(), HttpStatus.CREATED);
     }
 
 
@@ -97,29 +78,42 @@ public class MemberController {
 //        return new ResponseEntity<>(collect, HttpStatus.OK);
 //    }
 
+//    @GetMapping("/members")
+//    public String list(Model model) {
+//        List<Member> members = memberService.findMembers();
+//        model.addAttribute("members", members);
+//        return "/members/memberList";
+//    }
+
+//    @GetMapping("/members")
+//    public ResponseEntity<List<MemberDetailInfo>> memberList(@RequestParam(required = false, value = "offset", defaultValue = "0") int offset,
+//                                                             @RequestParam(required = false, value = "limit", defaultValue = "0") int limit) {
+//
+//        List<Member> members = memberService.readMemberList();
+//        List<MemberDetailInfo> collect = members.stream()
+//                .map(m -> new MemberDetailInfo(m.getEmail(), m.getName(), m.getModDate()))
+//                .collect(Collectors.toList());
+//
+//        return new ResponseEntity<>(collect, HttpStatus.OK);
+//    }
+
     @GetMapping("/members")
-    public String list(Model model) {
-        List<Member> members = memberService.findMembers();
-        model.addAttribute("members", members);
+    public ResponseEntity<List<MemberDetailInfo>> memberList(@RequestParam(required = false) String memberEmail,
+                                                             @RequestParam(required = false, value = "offset", defaultValue = "0") int offset,
+                                                             @RequestParam(required = false, value = "limit", defaultValue = "0") int limit) {
 
-        return "/members/memberList";
+        MemberListQuery query = MemberListQuery.builder()
+                .memberEmail(memberEmail)
+                .offset(offset)
+                .limit(limit)
+                .build();
+
+//        List<Member> members = memberService.readMemberList();
+//        List<MemberDetailInfo> collect = members.stream()
+//                .map(m -> new MemberDetailInfo(m.getEmail(), m.getName(), m.getModDate()))
+//                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(memberService.readMemberListByEmail(query), HttpStatus.OK);
     }
-
-
-    @Data
-    static class CreateMemberResponse {
-        private Long id;
-        public CreateMemberResponse(Long id) {
-            this.id = id;
-        }
-    }
-
-    @Data
-    static class CreateMemberRequest {
-        private String name;
-        private String email;
-        private String password;
-    }
-
 
 }
